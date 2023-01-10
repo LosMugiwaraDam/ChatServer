@@ -43,6 +43,7 @@ public class testServer {
 				}
 				ois.close();
 				Io.Sop("ok");
+				//aqui haremos cosas de hacer
 			} else
 				System.out.println("El fichero todavía NO existe");
 		} catch (Exception e) {
