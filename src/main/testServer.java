@@ -33,6 +33,8 @@ public class testServer {
 					while (true) {
 						c = (Cliente) ois.readObject();
 						//ClientesController.clientes.add(c);
+						
+						//-----------Aqui, movidas de movidear---------------//
 					}
 				} catch (ClassCastException | EOFException e) {
 					ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fich));
