@@ -1,18 +1,10 @@
 package clientService;
 
-import java.io.DataInputStream;
-import java.io.EOFException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-
-import clases.Empleado;
 
 import conexiones.Puertos;
+import main.Io;
 
 public class ClientService extends Thread {
 
@@ -23,15 +15,14 @@ public class ClientService extends Thread {
 
 	public void run() {
 		try {
-			ServerSocket skServidor = new ServerSocket(Puertos.puertoLogin);
+			ServerSocket skServidor = new ServerSocket(Puertos.puerto);
 
 			while (true) {
 				Socket skCliente = skServidor.accept();
 				new Login(skCliente);
 			}
-
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			Io.Sop(e.getMessage());
 		}
 	}
 }

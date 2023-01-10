@@ -1,48 +1,39 @@
 package clases;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-public class Mensaje implements Serializable {
-
+public class Mensaje implements Serializable{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Empleado empleado;
-	private String texto;
-	private LocalDate fecha;
-	private LocalTime hora;
-
-	public Mensaje(Empleado empleado, String texto) {
-		this.empleado = empleado;
-		this.texto = texto;
-		this.fecha = LocalDate.now();
-		this.hora = LocalTime.now();
-	}
-
-	public Empleado getEmpleado() {
-		return empleado;
-	}
-
-	public String getTexto() {
-		return texto;
-	}
-
-	public LocalDate getFecha() {
-		return fecha;
-	}
-
-	public LocalTime getHora() {
-		return hora;
-	}
-
+	public Usuario usuEnv;
+	public Usuario usuRec;
+	public String texto;
+	public String archivo;
+	public LocalDateTime fechaHora;
 	
-	@Override
-	public String toString() {
-		return empleado.nombre + " " + empleado.apellido1 + ": " + texto + "\n"
-				+ fecha + "  " + String.format("%02d",hora.getHour()) +":"+String.format("%02d",hora.getMinute());
+	public Mensaje(Usuario usuEnv, Usuario usuRec, String texto) {
+		super();
+		this.usuEnv = usuEnv;
+		this.usuRec = usuRec;
+		this.texto = texto;
+		this.archivo = "";
+		this.fechaHora = LocalDateTime.now();
 	}
+	
+	public String toString() {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"); 
+		String rec = "";
+		
+		if(usuRec != null) {
+			rec = usuRec.nombre + " " + usuRec.apellido1;
+		}else rec = "grupo";
 
+		return usuEnv.nombre + " " + usuEnv.apellido1 +
+				" a " + rec + ":\n" +
+				texto + "\n" + dtf.format(fechaHora);
+	}
 }

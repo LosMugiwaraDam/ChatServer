@@ -1,14 +1,8 @@
 package commandsService;
 
-import java.util.Scanner;
+import main.Io;
 
-import controllers.ConnectController;
-import controllers.UsuariosController;
-
-public class CommandsService extends Thread{
-
-	Scanner scan = new Scanner(System.in);
-	
+public class CommandsService extends Thread{	
 	public CommandsService () {
 		super();
 		start();
@@ -16,11 +10,9 @@ public class CommandsService extends Thread{
 	
 	public void run() {
 		while(true) {
-			String s = scan.nextLine();
+			String s = Io.leerString("");
 			
-			if(s.equals("conn"))UsuariosController.showConn();
-			
-			if(s.equals("save"))ConnectController.guardar();
+			if(s.equals("conn"));
 		}
 	}
 }

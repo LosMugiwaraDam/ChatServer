@@ -1,13 +1,15 @@
 package msgService;
 
-import java.io.IOException;
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.io.ObjectOutputStream;
 
-import clases.Mensaje;
-import conexiones.Puertos;
-import controllers.MensajesController;
+import clases.Cliente;
+import controllers.ClientesController;
+import main.Io;
 
 public class MsgService extends Thread {
 
@@ -18,22 +20,24 @@ public class MsgService extends Thread {
 
 	public void run() {
 		try {
-			ServerSocket skServer = new ServerSocket(Puertos.puertoRecepcionMensaje);
-
-			while (true) {
-				Socket skClient = skServer.accept();
-
-				ObjectInputStream oisClient = new ObjectInputStream(skClient.getInputStream());
-
-				Mensaje m = (Mensaje) oisClient.readObject();
-				
-				MensajesController.enviar(m);
-				
-				oisClient.close();
-			}
+			File fich = new File("clientes.obj");
+			if (fich.exists()) {
+				ObjectInputStream ois = null;
+				Cliente c;
+				try {
+					ois = new ObjectInputStream(new FileInputStream(fich));
+					while (true) {
+						c = (Cliente) ois.readObject();
+						ClientesController.clientes.add(c);
+					}
+				} catch (ClassCastException | EOFException e) {					
+					Io.Sop("Clientes cargados\n");
+				}
+				ois.close();
+			} else
+				System.out.println("El fichero todavía NO existe");
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			System.out.println(e);
 		}
-
 	}
 }

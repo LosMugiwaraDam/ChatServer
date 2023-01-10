@@ -1,19 +1,13 @@
 package clientService;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.EOFException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-import java.util.ArrayList;
+import java.io.*;
+import java.net.*;
+import java.util.*;
 
-import clases.Empleado;
-import clases.UserConn;
-import controllers.ConnectController;
-import controllers.UsuariosController;
+import clases.*;
+import controllers.ClientesController;
+import controllers.MensajesController;
+import main.Io;
 
 public class Login extends Thread {
 
@@ -28,64 +22,36 @@ public class Login extends Thread {
 	public void run() {
 		try {
 
-			File fich = new File("empleado.obj");
-
-			System.out.println("Entrada de solicitud de inicio de sesion");
+			Io.Sop("Entrada de solicitud de inicio de sesion\n\n");
 
 			DataInputStream disClient = new DataInputStream(this.skCliente.getInputStream());
 
-			Long nEmpl = disClient.readLong();
-			String contr = disClient.readUTF();
-			String ip = disClient.readUTF();
+			double nEmpl = disClient.readLong();
+			String passw = disClient.readUTF();
 
-			Empleado empleado = null;
+			Cliente cliente = null;
 
-			ArrayList<Empleado> empleados = new ArrayList<Empleado>();
-
-			ObjectInputStream oisFile = new ObjectInputStream(new FileInputStream(fich));
-			if (fich.exists()) {
-				try {
-					while (true) {
-						empleados.add((Empleado) oisFile.readObject());
-					}
-				} catch (EOFException ex) {
-					oisFile.close();
-				}
-			} else
-				System.out.println("El fichero todavía NO existe");
-
-			empleado = empleados.stream()
-					.filter(e -> e.getnEmpl().equals(nEmpl) && e.getContr().equals(contr) && e.getActivo()).findFirst()
-					.orElse(null);
-
+			cliente = ClientesController.clientes.stream().filter(e -> e.nEmpl == nEmpl && e.passw.equals(passw)).findFirst().orElse(null);
 			ObjectOutputStream oosClient = new ObjectOutputStream(this.skCliente.getOutputStream());
-			DataOutputStream dosClient = new DataOutputStream(this.skCliente.getOutputStream());
 
-			oosClient.writeObject(empleado);
-			Boolean isConnected = UsuariosController.isConnected(empleado);
-			dosClient.writeBoolean(isConnected);
-			if (empleado == null)
-				System.out.println("Nº Empleado o Contraseña Incorrecta");
-			else {
-				
-				if (isConnected) {
-					System.out.println("Usuario ya ha iniciado sesion en otro cliente");
-					skCliente.close();
-				} else {
-					skCliente.close();
-					System.out.println(
-							"Usuario " + empleado.getNombre() + " " + empleado.getApellido1() + " logeado con exito");
-					UserConn uConectado = new UserConn(empleado, ip);
-					ConnectController.add(uConectado);
-					UsuariosController.connect(uConectado);
-					System.out.println(uConectado.toString());
+			if (cliente == null) {
+				oosClient.writeObject(null);
+				Io.Sop("Nº Empleado o Contraseña Incorrecta\n\n");
+			} else {
+				oosClient.writeObject(cliente.usuario);
+				ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
+				for (Cliente c : ClientesController.clientes) {
+					if(c != cliente)
+					usuarios.add(c.usuario);
 				}
+				oosClient.writeObject(usuarios);
+				Io.Sop("Usuario " + cliente.usuario.nombre + " " + cliente.usuario.apellido1 + " logeado con exito\n\n");
+				cliente.socket = this.skCliente;
+				
+				new MsgReceiver(skCliente, cliente);
 			}
-			disClient.close();
-			oosClient.close();
-			dosClient.close();
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
+		} catch (Exception e) {	
+			Io.Sop(e+"");
 		}
 	}
 }
