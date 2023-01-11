@@ -34,7 +34,7 @@ public class MensajesController {
 					System.out.println(e.getMessage());
 				}
 			} else {
-				Io.Sop(cliente.usuario.nombre + " " + cliente.usuario.apellido1 + " no conectado");
+				Io.Sop(cliente.usuario.nombre + " " + cliente.usuario.apellido1 + " no conectado\n\n");
 			}
 		}
 	}

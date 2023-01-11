@@ -33,6 +33,8 @@ public class Login extends Thread {
 			ObjectOutputStream oosClient = new ObjectOutputStream(this.skCliente.getOutputStream());
 			DataOutputStream dosClient = new DataOutputStream(this.skCliente.getOutputStream());
 			
+		
+			
 			if (cliente == null) {
 				oosClient.writeObject(null);
 				Io.Sop("Nº Empleado o Contraseña Incorrecta\n\n");
@@ -46,6 +48,11 @@ public class Login extends Thread {
 					oosClient.writeObject(c.usuario);
 				}
 				Io.Sop("Usuario " + cliente.usuario.nombre + " " + cliente.usuario.apellido1 + " logeado con exito\n\n");
+				if(cliente.socket != null) {					
+				ObjectOutputStream oosClientOld = new ObjectOutputStream(cliente.socket.getOutputStream());
+				oosClientOld.writeObject(new Action());
+				}
+				
 				cliente.socket = this.skCliente;
 				
 				new MsgReceiver(skCliente, cliente);

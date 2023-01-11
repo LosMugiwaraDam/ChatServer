@@ -7,7 +7,6 @@ import java.net.SocketException;
 
 import clases.Cliente;
 import clases.Mensaje;
-import controllers.ClientesController;
 import controllers.MensajesController;
 import main.Io;
 
@@ -24,15 +23,34 @@ public class MsgReceiver extends Thread {
 	}
 
 	public void run() {
+		ObjectInputStream oisClient = null;
 		try {
 			while (true) {
-				ObjectInputStream oisClient = new ObjectInputStream(this.socket.getInputStream());
-				Mensaje m = (Mensaje) oisClient.readObject();
-				MensajesController.enviar(m);
+				oisClient = new ObjectInputStream(this.socket.getInputStream());
+				Object m = oisClient.readObject();
+
+				if (m instanceof Mensaje)
+					MensajesController.enviar((Mensaje) m);
+				else {
+					socket.close();
+					break;
+				}
 			}
 		} catch (SocketException e) {
-			ClientesController.disconnect(cliente);
+			Io.Sop(cliente.usuario.nombre + " " + cliente.usuario.apellido1 + " desconectado\n");
+			this.closeS(cliente.socket, oisClient);
+			cliente.socket = null;
 		} catch (IOException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void closeS(Socket s, ObjectInputStream ois) {
+		try {
+			s.close();
+			ois.close();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
