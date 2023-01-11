@@ -7,6 +7,7 @@ import java.net.SocketException;
 
 import clases.Cliente;
 import clases.Mensaje;
+import controllers.ClientesController;
 import controllers.MensajesController;
 import main.Io;
 
@@ -30,8 +31,7 @@ public class MsgReceiver extends Thread {
 				MensajesController.enviar(m);
 			}
 		} catch (SocketException e) {
-			Io.Sop(cliente.usuario.nombre + " " + cliente.usuario.apellido1 + " desconectado");
-			cliente.socket = null;
+			ClientesController.disconnect(cliente);
 		} catch (IOException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
