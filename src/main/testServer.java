@@ -15,9 +15,9 @@ public class testServer {
 
 	public static void main(String[] args) {
 
-		Cliente c1 = new Cliente(new Usuario("Jie", "Zhang", "Xiang"), (double) 1, "1233");
-		Cliente c2 = new Cliente(new Usuario("Ander", "Lopez", "Gracia"), (double) 2, "1233");
-		Cliente c3 = new Cliente(new Usuario("Cano", "Olatx", "Mendes"), (double) 3, "1233");
+		Cliente c1 = new Cliente(new Usuario((double) 1, "Jie", "Zhang", "Xiang"), "1233");
+		Cliente c2 = new Cliente(new Usuario((double) 2, "Ander", "Lopez", "Gracia"), "1233");
+		Cliente c3 = new Cliente(new Usuario((double) 3, "Cano", "Olatx", "Mendes"), "1233");
 
 		ClientesController.clientes.add(c1);
 		ClientesController.clientes.add(c2);

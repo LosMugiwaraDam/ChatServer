@@ -2,11 +2,9 @@ package clientService;
 
 import java.io.*;
 import java.net.*;
-import java.util.*;
 
 import clases.*;
 import controllers.ClientesController;
-import controllers.MensajesController;
 import main.Io;
 
 public class Login extends Thread {
@@ -31,20 +29,22 @@ public class Login extends Thread {
 
 			Cliente cliente = null;
 
-			cliente = ClientesController.clientes.stream().filter(e -> e.nEmpl == nEmpl && e.passw.equals(passw)).findFirst().orElse(null);
+			cliente = ClientesController.clientes.stream().filter(c -> c.usuario.nEmpl == nEmpl && c.passw.equals(passw)).findFirst().orElse(null);
 			ObjectOutputStream oosClient = new ObjectOutputStream(this.skCliente.getOutputStream());
-
+			DataOutputStream dosClient = new DataOutputStream(this.skCliente.getOutputStream());
+			
 			if (cliente == null) {
 				oosClient.writeObject(null);
 				Io.Sop("Nº Empleado o Contraseña Incorrecta\n\n");
 			} else {
 				oosClient.writeObject(cliente.usuario);
-				ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
+				
+				dosClient.writeInt(ClientesController.clientes.size());
+				
 				for (Cliente c : ClientesController.clientes) {
 					if(c != cliente)
-					usuarios.add(c.usuario);
+					oosClient.writeObject(c.usuario);
 				}
-				oosClient.writeObject(usuarios);
 				Io.Sop("Usuario " + cliente.usuario.nombre + " " + cliente.usuario.apellido1 + " logeado con exito\n\n");
 				cliente.socket = this.skCliente;
 				
