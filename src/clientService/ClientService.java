@@ -1,7 +1,8 @@
 package clientService;
 
-import java.net.ServerSocket;
-import java.net.Socket;
+import javax.net.ssl.SSLServerSocket;
+import javax.net.ssl.SSLServerSocketFactory;
+import javax.net.ssl.SSLSocket;
 
 import conexiones.Puertos;
 import main.Io;
@@ -15,11 +16,15 @@ public class ClientService extends Thread {
 
 	public void run() {
 		try {
-			ServerSocket skServidor = new ServerSocket(Puertos.puerto);
+			System.setProperty("javax.net.ssl.keyStore", "certificados/AlmacenSSL");
+			System.setProperty("javax.net.ssl.keyStorePassword","1234567");
+			
+			SSLServerSocketFactory sfact=(SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
+			SSLServerSocket skServidorSSL=(SSLServerSocket) sfact.createServerSocket(Puertos.puerto);
 
 			while (true) {
-				Socket skCliente = skServidor.accept();
-				new Login(skCliente);
+				SSLSocket skClienteSSL = (SSLSocket) skServidorSSL.accept();
+				new Login(skClienteSSL);
 			}
 		} catch (Exception e) {
 			Io.Sop(e.getMessage());

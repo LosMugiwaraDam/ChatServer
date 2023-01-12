@@ -12,9 +12,9 @@ public class MensajesController {
 		Io.Sop(m.toString() + "\n\n");
 		if (m.usuRec == null) {
 			for (Cliente cliente : ClientesController.clientes) {
-				if (cliente.socket != null) {
+				if (cliente.socketSSL != null) {
 					try {
-						ObjectOutputStream oosServer = new ObjectOutputStream(cliente.socket.getOutputStream());
+						ObjectOutputStream oosServer = new ObjectOutputStream(cliente.socketSSL.getOutputStream());
 						oosServer.writeObject(m);
 					} catch (Exception e) {
 						System.out.println(e.getMessage());
@@ -26,9 +26,9 @@ public class MensajesController {
 		} else {
 			Cliente cliente = ClientesController.clientes.stream().filter(c -> c.usuario.nEmpl == m.usuRec.nEmpl).findFirst().orElse(null);
 
-			if (cliente.socket != null) {
+			if (cliente.socketSSL != null) {
 				try {
-					ObjectOutputStream oosServer = new ObjectOutputStream(cliente.socket.getOutputStream());
+					ObjectOutputStream oosServer = new ObjectOutputStream(cliente.socketSSL.getOutputStream());
 					oosServer.writeObject(m);
 				} catch (Exception e) {
 					System.out.println(e.getMessage());

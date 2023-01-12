@@ -3,17 +3,19 @@ package clientService;
 import java.io.*;
 import java.net.*;
 
+import javax.net.ssl.SSLSocket;
+
 import clases.*;
 import controllers.ClientesController;
 import main.Io;
 
 public class Login extends Thread {
 
-	Socket skCliente;
+	SSLSocket skClienteSSL;
 
-	public Login(Socket sk) {
+	public Login(SSLSocket sk) {
 		super();
-		this.skCliente = sk;
+		this.skClienteSSL = sk;
 		start();
 	}
 
@@ -22,7 +24,7 @@ public class Login extends Thread {
 
 			Io.Sop("Entrada de solicitud de inicio de sesion\n\n");
 
-			DataInputStream disClient = new DataInputStream(this.skCliente.getInputStream());
+			DataInputStream disClient = new DataInputStream(this.skClienteSSL.getInputStream());
 
 			double nEmpl = disClient.readLong();
 			String passw = disClient.readUTF();
@@ -30,8 +32,8 @@ public class Login extends Thread {
 			Cliente cliente = null;
 
 			cliente = ClientesController.clientes.stream().filter(c -> c.usuario.nEmpl == nEmpl && c.passw.equals(passw)).findFirst().orElse(null);
-			ObjectOutputStream oosClient = new ObjectOutputStream(this.skCliente.getOutputStream());
-			DataOutputStream dosClient = new DataOutputStream(this.skCliente.getOutputStream());
+			ObjectOutputStream oosClient = new ObjectOutputStream(this.skClienteSSL.getOutputStream());
+			DataOutputStream dosClient = new DataOutputStream(this.skClienteSSL.getOutputStream());
 			
 		
 			
@@ -48,14 +50,14 @@ public class Login extends Thread {
 					oosClient.writeObject(c.usuario);
 				}
 				Io.Sop("Usuario " + cliente.usuario.nombre + " " + cliente.usuario.apellido1 + " logeado con exito\n\n");
-				if(cliente.socket != null) {					
-				ObjectOutputStream oosClientOld = new ObjectOutputStream(cliente.socket.getOutputStream());
+				if(cliente.socketSSL != null) {					
+				ObjectOutputStream oosClientOld = new ObjectOutputStream(cliente.socketSSL.getOutputStream());
 				oosClientOld.writeObject(new Action());
 				}
 				
-				cliente.socket = this.skCliente;
+				cliente.socketSSL = this.skClienteSSL;
 				
-				new MsgReceiver(skCliente, cliente);
+				new MsgReceiver(skClienteSSL, cliente);
 			}
 		} catch (Exception e) {	
 			Io.Sop(e+"");
