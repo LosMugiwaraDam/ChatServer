@@ -5,7 +5,7 @@ import javax.net.ssl.SSLServerSocketFactory;
 import javax.net.ssl.SSLSocket;
 
 import conexiones.Puertos;
-import main.Io;
+import util.Io;
 
 public class ClientService extends Thread {
 

@@ -1,6 +1,6 @@
 package commandsService;
 
-import main.Io;
+import util.Io;
 
 public class CommandsService extends Thread{	
 	public CommandsService () {
@@ -12,7 +12,6 @@ public class CommandsService extends Thread{
 		while(true) {
 			String s = Io.leerString("");
 			
-			if(s.equals("conn"));
 		}
 	}
 }

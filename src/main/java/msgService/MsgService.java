@@ -3,13 +3,11 @@ package msgService;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
 import clases.Cliente;
 import controllers.ClientesController;
-import main.Io;
+import util.Io;
 
 public class MsgService extends Thread {
 
@@ -35,7 +33,8 @@ public class MsgService extends Thread {
 				}
 				ois.close();
 			} else
-				System.out.println("El fichero todavía NO existe");
+				System.out.println("Clientes no encontrados");
+				System.exit(-1);
 		} catch (Exception e) {
 			System.out.println(e);
 		}

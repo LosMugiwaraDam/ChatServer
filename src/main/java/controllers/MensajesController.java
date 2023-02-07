@@ -4,7 +4,7 @@ import java.io.ObjectOutputStream;
 
 import clases.Cliente;
 import clases.Mensaje;
-import main.Io;
+import util.Io;
 
 public class MensajesController {
 

@@ -12,7 +12,7 @@ import clases.Pidove;
 import clases.Cliente;
 import clases.Mensaje;
 import controllers.MensajesController;
-import main.Io;
+import util.Io;
 
 public class MsgReceiver extends Thread {
 
