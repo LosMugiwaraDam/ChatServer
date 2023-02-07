@@ -10,13 +10,14 @@ public class Io {// FUNCIONES DE UTILIDAD
 		System.out.print(texto);
 	}
 
-	public static int opMenu(String[] menu) {// IMPRIME UN MENU Y PIDE UNA OPCION
-		Io.Sop("\n\n\n");
+	public static int opMenu(String[] menu, String pred) {// IMPRIME UN MENU Y PIDE UNA OPCION
+		Io.Sop("\n\n");
 		for (int i = 0; i < menu.length; i++) {
 			Sop("\n[" + (i + 1) + "]-" + menu[i]);
 		}
-		Sop("\n\n[0]-Nada");
-		return (leerInt("Elija una opcion: "));
+		if (pred != "")
+			Sop("\n[0]-" + pred);
+		return (leerInt("\n\nElija una opcion:\n"));
 	}
 
 	public static char leerChar(String texto) {// PIDE UN CARACTER

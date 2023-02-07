@@ -16,7 +16,7 @@ public class ClientService extends Thread {
 
 	public void run() {
 		try {
-			System.setProperty("javax.net.ssl.keyStore", "certificados/AlmacenSSL");
+			System.setProperty("javax.net.ssl.keyStore", "certificadosJie/AlmacenSSL");
 			System.setProperty("javax.net.ssl.keyStorePassword","1234567");
 			
 			SSLServerSocketFactory sfact=(SSLServerSocketFactory) SSLServerSocketFactory.getDefault();

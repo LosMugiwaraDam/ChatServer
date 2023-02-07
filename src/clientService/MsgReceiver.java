@@ -2,10 +2,13 @@ package clientService;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.EOFException;
+import java.io.FilterInputStream;
 import java.net.SocketException;
 
 import javax.net.ssl.SSLSocket;
 
+import clases.Pidove;
 import clases.Cliente;
 import clases.Mensaje;
 import controllers.MensajesController;
@@ -29,12 +32,15 @@ public class MsgReceiver extends Thread {
 			while (true) {
 				oisClient = new ObjectInputStream(this.socketSSL.getInputStream());
 				Object m = oisClient.readObject();
-
+				
 				if (m instanceof Mensaje)
 					MensajesController.enviar((Mensaje) m);
 				else {
-					socketSSL.close();
-					break;
+					Pidove ac = (Pidove) m;
+					if (ac.action == 1) {
+						socketSSL.close();
+						break;
+					}
 				}
 			}
 		} catch (SocketException e) {
@@ -50,7 +56,8 @@ public class MsgReceiver extends Thread {
 	public void closeS(SSLSocket s, ObjectInputStream ois) {
 		try {
 			s.close();
-			ois.close();
+			if (ois != null)
+				ois.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

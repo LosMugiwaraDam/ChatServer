@@ -12,15 +12,15 @@ public class Mensaje implements Serializable{
 	public Usuario usuEnv;
 	public Usuario usuRec;
 	public String texto;
-	public String archivo;
+	public Archivo archivo;
 	public LocalDateTime fechaHora;
 	
-	public Mensaje(Usuario usuEnv, Usuario usuRec, String texto) {
+	public Mensaje(Usuario usuEnv, Usuario usuRec, String texto, Archivo archivo) {
 		super();
 		this.usuEnv = usuEnv;
 		this.usuRec = usuRec;
 		this.texto = texto;
-		this.archivo = "";
+		this.archivo = archivo;
 		this.fechaHora = LocalDateTime.now();
 	}
 	
@@ -31,9 +31,16 @@ public class Mensaje implements Serializable{
 		if(usuRec != null) {
 			rec = usuRec.nombre + " " + usuRec.apellido1;
 		}else rec = "grupo";
+		
+		String archN = "";
+		
+		if(archivo != null) {
+			archN = "archivo:" + archivo.getNombre() + "\n";
+		}
 
 		return usuEnv.nombre + " " + usuEnv.apellido1 +
-				" a " + rec + ":\n" +
-				texto + "\n" + dtf.format(fechaHora);
+				" a " + rec + ":\n" + 
+				archN +
+				texto + "\n";
 	}
 }
