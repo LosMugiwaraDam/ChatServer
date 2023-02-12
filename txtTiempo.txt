@@ -1,1 +1,1 @@
-11,Muy nuboso,11
+16,Despejado,14

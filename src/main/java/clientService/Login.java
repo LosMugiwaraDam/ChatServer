@@ -1,7 +1,6 @@
 package clientService;
 
 import java.io.*;
-import java.net.*;
 
 import javax.net.ssl.SSLSocket;
 
@@ -52,7 +51,7 @@ public class Login extends Thread {
 				Io.Sop("Usuario " + cliente.usuario.nombre + " " + cliente.usuario.apellido1 + " logeado con exito\n\n");
 				if(cliente.socketSSL != null) {					
 				ObjectOutputStream oosClientOld = new ObjectOutputStream(cliente.socketSSL.getOutputStream());
-				oosClientOld.writeObject(new Pidove(1));
+				oosClientOld.writeObject(new Pidove(1, null, ""));
 				}
 				
 				cliente.socketSSL = this.skClienteSSL;

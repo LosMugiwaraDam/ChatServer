@@ -4,24 +4,23 @@ import java.io.ObjectOutputStream;
 
 import javax.net.ssl.SSLSocket;
 
-import clases.Mensaje;
 
-public class MsgSend extends Thread{
+public class SendController extends Thread{
 
 	SSLSocket socketSSL;
-	Mensaje m;
+	Object o;
 
-	public MsgSend(SSLSocket socketSSL, Mensaje m) {
+	public SendController(SSLSocket socketSSL, Object o) {
 		super();
 		this.socketSSL = socketSSL;
-		this.m = m;
+		this.o = o;
 		start();
 	}
 
 	public void run() {
 		try {
 			ObjectOutputStream oosServer = new ObjectOutputStream(socketSSL.getOutputStream());
-			oosServer.writeObject(m);
+			oosServer.writeObject(o);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}

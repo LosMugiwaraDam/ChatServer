@@ -1,10 +1,7 @@
 package util;
 
-import java.io.EOFException;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import clases.Cliente;
@@ -26,27 +23,11 @@ public class testServer {
 		try {
 			File fich = new File("clientes.obj");
 			if (fich.exists()) {
-				ObjectInputStream ois = null;
-				Cliente c;
-				try {
-					ois = new ObjectInputStream(new FileInputStream(fich));
-					while (true) {
-						c = (Cliente) ois.readObject();
-						//ClientesController.clientes.add(c);
-						
-						//-----------Aqui, movidas de movidear---------------//
-					}
-				} catch (ClassCastException | EOFException e) {
-					ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fich));
-					for (Cliente cliente : ClientesController.clientes) {
-						oos.writeObject(cliente);
-					}
-					oos.close();
+				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fich));
+				for (Cliente cliente : ClientesController.clientes) {
+					oos.writeObject(cliente);
 				}
-				ois.close();
-				Io.Sop("ok");
-				//aqui haremos cosas de hacer
-				//nadie te ha preguntadooopoiooo
+				oos.close();
 			} else
 				System.out.println("El fichero todavía NO existe");
 		} catch (Exception e) {

@@ -2,8 +2,6 @@ package clientService;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.EOFException;
-import java.io.FilterInputStream;
 import java.net.SocketException;
 
 import javax.net.ssl.SSLSocket;
@@ -11,7 +9,10 @@ import javax.net.ssl.SSLSocket;
 import clases.Pidove;
 import clases.Cliente;
 import clases.Mensaje;
+import controllers.ClientesController;
 import controllers.MensajesController;
+import controllers.SendController;
+import util.Clima;
 import util.Io;
 
 public class MsgReceiver extends Thread {
@@ -29,6 +30,7 @@ public class MsgReceiver extends Thread {
 	public void run() {
 		ObjectInputStream oisClient = null;
 		try {
+			Clima clima = new Clima();
 			while (true) {
 				oisClient = new ObjectInputStream(this.socketSSL.getInputStream());
 				Object m = oisClient.readObject();
@@ -40,6 +42,11 @@ public class MsgReceiver extends Thread {
 					if (ac.action == 1) {
 						socketSSL.close();
 						break;
+					}
+					if (ac.action == 2) {
+						Cliente cliente =  ClientesController.clientes.stream().filter(c -> c.usuario.nEmpl == ac.usuario.nEmpl).findFirst().get();
+						
+						new SendController(cliente.socketSSL, new Pidove(2,null, clima.getClima()));
 					}
 				}
 			}

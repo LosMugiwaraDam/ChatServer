@@ -2,7 +2,7 @@ package Chat.Server;
 
 import clientService.ClientService;
 import commandsService.CommandsService;
-import msgService.MsgService;
+import util.UtilService;
 
 /**
  * Hello world!
@@ -13,7 +13,7 @@ public class App
     public static void main( String[] args )
     {
 		new ClientService();
-		new MsgService();
+		new UtilService();
 		new CommandsService();
     }
 }

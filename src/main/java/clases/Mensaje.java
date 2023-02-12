@@ -2,7 +2,6 @@ package clases;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class Mensaje implements Serializable{
 	/**
@@ -25,7 +24,6 @@ public class Mensaje implements Serializable{
 	}
 	
 	public String toString() {
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"); 
 		String rec = "";
 		
 		if(usuRec != null) {

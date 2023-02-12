@@ -1,4 +1,4 @@
-package msgService;
+package util;
 
 import java.io.EOFException;
 import java.io.File;
@@ -7,15 +7,13 @@ import java.io.ObjectInputStream;
 
 import clases.Cliente;
 import controllers.ClientesController;
-import util.Io;
 
-public class MsgService extends Thread {
+public class ClientChargeHandler extends Thread{
 
-	public MsgService() {
+	public ClientChargeHandler() {
 		super();
 		start();
 	}
-
 	public void run() {
 		try {
 			File fich = new File("clientes.obj");
@@ -32,9 +30,10 @@ public class MsgService extends Thread {
 					Io.Sop("Clientes cargados\n");
 				}
 				ois.close();
-			} else
+			} else {				
 				System.out.println("Clientes no encontrados");
 				System.exit(-1);
+			}
 		} catch (Exception e) {
 			System.out.println(e);
 		}

@@ -1,6 +1,5 @@
 package commandsService;
 
-import util.Io;
 
 public class CommandsService extends Thread{	
 	public CommandsService () {
@@ -10,7 +9,7 @@ public class CommandsService extends Thread{
 	
 	public void run() {
 		while(true) {
-			String s = Io.leerString("");
+//			String s = Io.leerString("");
 			
 		}
 	}

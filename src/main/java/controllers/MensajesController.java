@@ -1,6 +1,5 @@
 package controllers;
 
-import java.io.ObjectOutputStream;
 
 import clases.Cliente;
 import clases.Mensaje;
@@ -19,7 +18,7 @@ public class MensajesController {
 		if (m.usuRec == null) {
 			for (Cliente cliente : ClientesController.clientes) {
 				if (cliente.socketSSL != null) {
-					new MsgSend(cliente.socketSSL, m);
+					new SendController(cliente.socketSSL, m);
 					Io.Sop("enviado a:" + cliente.usuario.nombre);
 				} else {
 					Io.Sop(cliente.usuario.nombre + " " + cliente.usuario.apellido1 + " no conectado\n\n");
@@ -30,7 +29,7 @@ public class MensajesController {
 					.findFirst().orElse(null);
 
 			if (cliente.socketSSL != null) {
-				new MsgSend(cliente.socketSSL, m);
+				new SendController(cliente.socketSSL, m);
 				Io.Sop("enviado a:" + cliente.usuario.nombre);
 			} else {
 				Io.Sop(cliente.usuario.nombre + " " + cliente.usuario.apellido1 + " no conectado\n\n");
