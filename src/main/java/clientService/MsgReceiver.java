@@ -1,5 +1,6 @@
 package clientService;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.SocketException;
@@ -13,6 +14,7 @@ import controllers.ClientesController;
 import controllers.MensajesController;
 import controllers.SendController;
 import util.Clima;
+import util.ClimaHandler;
 import util.Io;
 
 public class MsgReceiver extends Thread {
@@ -30,11 +32,9 @@ public class MsgReceiver extends Thread {
 	public void run() {
 		ObjectInputStream oisClient = null;
 		try {
-			Clima clima = new Clima();
 			while (true) {
 				oisClient = new ObjectInputStream(this.socketSSL.getInputStream());
 				Object m = oisClient.readObject();
-				
 				if (m instanceof Mensaje)
 					MensajesController.enviar((Mensaje) m);
 				else {
@@ -46,11 +46,15 @@ public class MsgReceiver extends Thread {
 					if (ac.action == 2) {
 						Cliente cliente =  ClientesController.clientes.stream().filter(c -> c.usuario.nEmpl == ac.usuario.nEmpl).findFirst().get();
 						
-						new SendController(cliente.socketSSL, new Pidove(2,null, clima.getClima()));
+						String climaStr = ClimaHandler.clima.getClima();
+						
+						new SendController(cliente.socketSSL, new Pidove(2,null, climaStr));
+						
+						Io.Sop("Desde movil: "+climaStr+"\n");
 					}
 				}
 			}
-		} catch (SocketException e) {
+		} catch (SocketException | EOFException e) {
 			Io.Sop(cliente.usuario.nombre + " " + cliente.usuario.apellido1 + " desconectado\n");
 			this.closeS(cliente.socketSSL, oisClient);
 			cliente.socketSSL = null;

@@ -26,7 +26,7 @@ public class Clima extends UnicastRemoteObject implements ClimaInterface{
 	}
 	
 	@Override
-	public String getClima() throws RemoteException {
+	public synchronized String getClima() throws RemoteException {
 		
 		File file = new File("txtTiempo.txt");
 		file.delete();
