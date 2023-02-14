@@ -1,7 +1,6 @@
 package Chat.Server;
 
 import clientService.ClientService;
-import commandsService.CommandsService;
 import util.UtilService;
 
 /**
@@ -14,6 +13,5 @@ public class App
     {
 		new ClientService();
 		new UtilService();
-		new CommandsService();
     }
 }

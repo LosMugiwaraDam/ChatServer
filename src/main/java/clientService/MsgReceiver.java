@@ -13,7 +13,6 @@ import clases.Mensaje;
 import controllers.ClientesController;
 import controllers.MensajesController;
 import controllers.SendController;
-import util.Clima;
 import util.ClimaHandler;
 import util.Io;
 
