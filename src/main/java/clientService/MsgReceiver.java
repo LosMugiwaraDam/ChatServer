@@ -40,15 +40,14 @@ public class MsgReceiver extends Thread {
 					Pidove ac = (Pidove) m;
 					if (ac.action == 1) {
 						socketSSL.close();
+						cliente.socketSSL = null;
+
 						break;
 					}
 					if (ac.action == 2) {
 						Cliente cliente =  ClientesController.clientes.stream().filter(c -> c.usuario.nEmpl == ac.usuario.nEmpl).findFirst().get();
-						
 						String climaStr = ClimaHandler.clima.getClima();
-						
 						new SendController(cliente.socketSSL, new Pidove(2,null, climaStr));
-						
 						Io.Sop("Desde movil: "+climaStr+"\n");
 					}
 				}

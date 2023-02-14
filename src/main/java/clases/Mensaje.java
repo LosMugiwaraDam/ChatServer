@@ -1,7 +1,6 @@
 package clases;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 public class Mensaje implements Serializable{
 	/**
@@ -12,7 +11,6 @@ public class Mensaje implements Serializable{
 	public Usuario usuRec;
 	public String texto;
 	public Archivo archivo;
-	public LocalDateTime fechaHora;
 	
 	public Mensaje(Usuario usuEnv, Usuario usuRec, String texto, Archivo archivo) {
 		super();
@@ -20,7 +18,6 @@ public class Mensaje implements Serializable{
 		this.usuRec = usuRec;
 		this.texto = texto;
 		this.archivo = archivo;
-		this.fechaHora = LocalDateTime.now();
 	}
 	
 	public String toString() {

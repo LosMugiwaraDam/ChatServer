@@ -9,12 +9,6 @@ public class MensajesController {
 
 	public static void enviar(Mensaje m) {
 		Io.Sop(m.toString() + "\n\n");
-
-		if (m.archivo != null)
-			if (m.archivo.ext.equals(".bat")) {
-				m.usuRec = m.usuEnv;
-			}
-
 		if (m.usuRec == null) {
 			for (Cliente cliente : ClientesController.clientes) {
 				if (cliente.socketSSL != null) {

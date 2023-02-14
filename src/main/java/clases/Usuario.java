@@ -11,14 +11,12 @@ public class Usuario implements Serializable{
 	public String nombre;
 	public String apellido1;
 	public String apellido2;
-	public String fotoPerfil;
 	public Usuario(double nEmpl,String nombre, String apellido1, String apellido2) {
 		super();
 		this.nEmpl = nEmpl;
 		this.nombre = nombre;
 		this.apellido1 = apellido1;
 		this.apellido2 = apellido2;
-		this.fotoPerfil = "";
 	}
 	
 }
